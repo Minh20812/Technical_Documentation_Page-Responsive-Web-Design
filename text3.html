@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/tex3.css" />
+    <title>REACT HOOKS</title>
+  </head>
+  <body>
+    <nav id="navbar">
+      <header class="header">
+        <h1>React Hooks</h1>
+      </header>
+      <ul>
+        <li>
+          <a class="nav-link" href="#Built_in_React_Hooks"
+            >Built in React Hooks</a
+          >
+        </li>
+        <li>
+          <a class="nav-link" href="#State_Hooks">State Hooks</a>
+        </li>
+        <li>
+          <a class="nav-link" href="#Context_Hooks">Context Hooks</a>
+        </li>
+        <li>
+          <a class="nav-link" href="#Ref_Hooks">Ref Hooks</a>
+        </li>
+        <li>
+          <a class="nav-link" href="#Effect_Hooks">Effect Hooks</a>
+        </li>
+        <li>
+          <a class="nav-link" href="#Performance_Hooks">Performance Hooks</a>
+        </li>
+        <li>
+          <a class="nav-link" href="#Other_Hooks">Other Hooks</a>
+        </li>
+        <li>
+          <a class="nav-link" href="#Your_own_Hooks">Your own Hooks</a>
+        </li>
+      </ul>
+    </nav>
+    <main id="main-doc">
+      <section class="main-section" id="Built_in_React_Hooks">
+        <header><h2>Built in React Hooks</h2></header>
+        <article>
+          <p>
+            <span>Hooks</span> let you use different React features from your
+            components. You can either use the built-in Hooks or combine them to
+            build your own. This page lists all built-in Hooks in React.
+          </p>
+        </article>
+      </section>
+
+      <section class="main-section" id="State_Hooks">
+        <header><h2>State Hooks</h2></header>
+        <article>
+          <p>
+            State lets a component “remember” information like user input. For
+            example, a form component can use state to store the input value,
+            while an image gallery component can use state to store the selected
+            image index. To add state to a component, use one of these Hooks:
+          </p>
+          <li>
+            <code>useState</code> declares a state variable that you can update
+            directly.
+          </li>
+          <li>
+            <code>useReducer</code> declares a state variable with the update
+            logic inside a reducer function.
+          </li>
+          <pre>
+function ImageGallery() {
+            const [index, setIndex] = useState(0);
+            // ...</pre
+          >
+        </article>
+      </section>
+
+      <section class="main-section" id="Context_Hooks">
+        <header><h2>Context Hooks</h2></header>
+        <article>
+          <p>
+            Context lets a component receive information from distant parents
+            without passing it as props. For example, your app's top-level
+            component can pass the current UI theme to all components below, no
+            matter how deep.
+          </p>
+          <li><code>useContext</code> reads and subscribes to a context.</li>
+          <pre>
+function Button() {
+            const theme = useContext(ThemeContext);
+            // ...</pre
+          >
+        </article>
+      </section>
+
+      <section class="main-section" id="Ref_Hooks">
+        <header><h2>Ref Hooks</h2></header>
+        <article>
+          <p>
+            Refs let a component hold some information that isn't used for
+            rendering, like a DOM node or a timeout ID. Unlike with state,
+            updating a ref does not re-render your component. Refs are an
+            “escape hatch” from the React paradigm. They are useful when you
+            need to work with non-React systems, such as the built-in browser
+            APIs.
+          </p>
+          <li>
+            <code>useRef</code>declares a ref. You can hold any value in it, but
+            most often it's used to hold a DOM node.
+          </li>
+          <li>
+            <code>useImperativeHandle</code>lets you customize the ref exposed
+            by your component. This is rarely used.
+          </li>
+          <pre>
+function Form() {
+            const inputRef = useRef(null);
+            // ...</pre
+          >
+        </article>
+      </section>
+
+      <section class="main-section" id="Effect_Hooks">
+        <header><h2>Effect Hooks</h2></header>
+        <article>
+          <p>
+            Effects let a component connect to and synchronize with external
+            systems. This includes dealing with network, browser DOM,
+            animations, widgets written using a different UI library, and other
+            non-React code.
+          </p>
+          <li>
+            <code>useEffect</code>connects a component to an external system.
+          </li>
+          <pre>
+function ChatRoom({ roomId }) {
+            useEffect(() => {
+              const connection = createConnection(roomId);
+              connection.connect();
+              return () => connection.disconnect();
+            }, [roomId]);
+            // ...
+          </pre>
+          <p>
+            Effects are an “escape hatch” from the React paradigm. Don't use
+            Effects to orchestrate the data flow of your application. If you're
+            not interacting with an external system, you might not need an
+            Effect. There are two rarely used variations of useEffect with
+            differences in timing:
+          </p>
+          <li>
+            <code>useLayoutEffect</code> fires before the browser repaints the
+            screen. You can measure layout here.
+          </li>
+          <li>
+            <code>useInsertionEffect</code> fires before React makes changes to
+            the DOM. Libraries can insert dynamic CSS here.
+          </li>
+        </article>
+      </section>
+
+      <section class="main-section" id="Performance_Hooks">
+        <header><h2>Performance Hooks</h2></header>
+        <article>
+          <p>
+            A common way to optimize re-rendering performance is to skip
+            unnecessary work. For example, you can tell React to reuse a cached
+            calculation or to skip a re-render if the data has not changed since
+            the previous render. To skip calculations and unnecessary
+            re-rendering, use one of these Hooks:
+          </p>
+          <li>
+            <code>useMemo</code> lets you cache the result of an expensive
+            calculation.
+          </li>
+          <li>
+            <code>useCallback</code> lets you cache a function definition before
+            passing it down to an optimized component.
+          </li>
+          <pre>
+function TodoList({ todos, tab, theme }) {
+            const visibleTodos = useMemo(() => filterTodos(todos, tab), [todos, tab]);
+            // ...
+          }</pre
+          >
+          <p>
+            Sometimes, you can't skip re-rendering because the screen actually
+            needs to update. In that case, you can improve performance by
+            separating blocking updates that must be synchronous (like typing
+            into an input) from non-blocking updates which don't need to block
+            the user interface (like updating a chart). To prioritize rendering,
+            use one of these Hooks:
+          </p>
+          <li>
+            <code>useTransition</code> lets you mark a state transition as
+            non-blocking and allow other updates to interrupt it.
+          </li>
+          <li>
+            <code>useDeferredValue</code> lets you defer updating a non-critical
+            part of the UI and let other parts update first.
+          </li>
+        </article>
+      </section>
+
+      <section class="main-section" id="Other_Hooks">
+        <header><h2>Other Hooks</h2></header>
+        <article>
+          <p>
+            These Hooks are mostly useful to library authors and aren't commonly
+            used in the application code.
+          </p>
+          <li>
+            <code>useDebugValue</code> lets you customize the label React
+            DevTools displays for your custom Hook.
+          </li>
+          <li>
+            <code>useId</code> lets a component associate a unique ID with
+            itself. Typically used with accessibility APIs.
+          </li>
+          <li>
+            <code>useSyncExternalStore</code> lets a component subscribe to an
+            external store.
+          </li>
+        </article>
+      </section>
+
+      <section class="main-section" id="Your_own_Hooks">
+        <header><h2>Your own Hooks</h2></header>
+        <article>
+          <p>
+            You can also define your own custom Hooks as JavaScript functions.
+          </p>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
